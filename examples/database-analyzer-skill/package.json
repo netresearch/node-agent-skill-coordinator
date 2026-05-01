@@ -1,0 +1,9 @@
+{
+  "name": "@example/database-analyzer-skill",
+  "version": "1.0.0",
+  "description": "AI agent skill for database schema analysis and optimization (example).",
+  "license": "MIT",
+  "keywords": ["ai-agent-skill", "database", "analyzer", "optimization"],
+  "aiAgentSkill": "SKILL.md",
+  "files": ["SKILL.md", "README.md"]
+}

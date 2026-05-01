@@ -20,11 +20,19 @@ async function main() {
   // INIT_CWD. Fall back to cwd for unusual harnesses.
   const projectRoot = process.env.INIT_CWD || process.cwd();
 
+  // Skip when this package is being developed locally. During a normal
+  // consumer install, process.cwd() points inside node_modules and
+  // INIT_CWD points to the project root above — they differ. When
+  // running `npm install` in this repo itself (dev work), both equal
+  // the repo root, which is the signal to bail rather than write a
+  // spurious AGENTS.md into the coordinator's own checkout.
+  if (process.cwd() === projectRoot) {
+    return;
+  }
+
   const nodeModulesDir = join(projectRoot, 'node_modules');
   if (!existsSync(nodeModulesDir)) {
-    // No node_modules → nothing to scan. This typically means we're
-    // running `npm install` inside this very repo (development of the
-    // coordinator itself) before deps have been installed.
+    // No node_modules → nothing to scan.
     return;
   }
 

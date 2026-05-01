@@ -32,7 +32,14 @@
   "scripts": {
     "postinstall": "node ./bin/postinstall.js",
     "test": "node --test 'test/*.test.js'",
-    "test:watch": "node --test --watch 'test/*.test.js'"
+    "test:watch": "node --test --watch 'test/*.test.js'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0"
   },
   "files": [
     "src/",
