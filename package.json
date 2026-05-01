@@ -31,8 +31,8 @@
   },
   "scripts": {
     "postinstall": "node ./bin/postinstall.js",
-    "test": "node --test 'test/*.test.js'",
-    "test:watch": "node --test --watch 'test/*.test.js'",
+    "test": "node --test test/*.test.js",
+    "test:watch": "node --test --watch test/*.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
