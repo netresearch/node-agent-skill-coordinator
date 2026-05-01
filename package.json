@@ -1,0 +1,47 @@
+{
+  "name": "@netresearch/agent-skill-coordinator",
+  "version": "0.1.0",
+  "description": "Node coordinator that discovers AI agent skills from installed npm packages and registers them in AGENTS.md. Sibling of netresearch/composer-agent-skill-plugin.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Netresearch DTT GmbH <plugins@netresearch.de> (https://www.netresearch.de/)",
+  "homepage": "https://github.com/netresearch/node-agent-skill-coordinator",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netresearch/node-agent-skill-coordinator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/netresearch/node-agent-skill-coordinator/issues"
+  },
+  "keywords": [
+    "ai-agent",
+    "agent-skill",
+    "ai-agent-skill",
+    "skill-coordinator",
+    "anthropic",
+    "claude-code",
+    "agents-md"
+  ],
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "main": "./src/index.js",
+  "bin": {
+    "agent-skills": "./bin/cli.js"
+  },
+  "scripts": {
+    "postinstall": "node ./bin/postinstall.js",
+    "test": "node --test 'test/*.test.js'",
+    "test:watch": "node --test --watch 'test/*.test.js'"
+  },
+  "files": [
+    "src/",
+    "bin/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
