@@ -27,7 +27,7 @@
   },
   "main": "./src/index.js",
   "bin": {
-    "agent-skills": "./bin/cli.js"
+    "agent-skills": "bin/cli.js"
   },
   "scripts": {
     "postinstall": "node ./bin/postinstall.js",
