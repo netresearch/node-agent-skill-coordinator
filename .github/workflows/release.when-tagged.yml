@@ -76,12 +76,21 @@ jobs:
 
       - name: Check whether this version is already on npm
         id: npm_check
+        # Use a plain HTTP probe instead of `npm view` — setup-node has wired
+        # this runner up with OIDC auth for the registry, and `npm view` then
+        # sends an authed request that 404s for any package whose Trusted
+        # Publisher doesn't include this exact workflow context, even when
+        # the package and version are publicly readable. The registry's REST
+        # endpoint is unauthenticated and returns the truth.
         run: |
           PKG_VERSION="$(node -p "require('./package.json').version")"
-          if npm view "@netresearch/agent-skill-coordinator@${PKG_VERSION}" version >/dev/null 2>&1; then
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://registry.npmjs.org/@netresearch/agent-skill-coordinator/${PKG_VERSION}")
+          if [ "$STATUS" = "200" ]; then
             echo "Version ${PKG_VERSION} already on npm — skipping publish step."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
+            echo "Version ${PKG_VERSION} not on npm yet (HTTP $STATUS) — will publish."
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -101,10 +110,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PKG_VERSION="$(node -p "require('./package.json').version")"
+          # GHCR's npm-compatible API requires auth even for HEAD/GET on
+          # private namespaces, so keep using `npm view` here — it works
+          # because GHCR doesn't have the same OIDC quirk as registry.npmjs.org.
           if npm view "@netresearch/agent-skill-coordinator@${PKG_VERSION}" version --registry=https://npm.pkg.github.com >/dev/null 2>&1; then
             echo "Version ${PKG_VERSION} already on GitHub Package Registry — skipping publish step."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
+            echo "Version ${PKG_VERSION} not on GHCR yet — will publish."
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
