@@ -1,6 +1,6 @@
 {
   "name": "@netresearch/agent-skill-coordinator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Node coordinator that discovers AI agent skills from installed npm packages and registers them in AGENTS.md. Sibling of netresearch/composer-agent-skill-plugin.",
   "type": "module",
   "license": "MIT",

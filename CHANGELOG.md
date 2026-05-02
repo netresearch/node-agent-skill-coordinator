@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-05-02
+
+### Fixed
+
+- Drop `ai-agent-skill` keyword from the coordinator's own `package.json`. The keyword is the convention-based opt-in marker for *skill* packages; carrying it on the coordinator caused every install to emit `SKILL.md not found at 'SKILL.md'` against itself when run alongside any real skill package. Caught during a real-world install test against `@netresearch/git-workflow-skill`.
+
+### Added
+
+- `.github/dependabot.yml` for weekly grouped github-actions updates and `renovate.json` (`config:recommended`, github-actions disabled) for the rest of the dependency surface — mirrors the `composer-agent-skill-plugin` sibling setup.
+
+### Changed
+
+- Release workflow's idempotency check now probes `https://registry.npmjs.org/` directly via `curl` instead of `npm view`, so the skip works correctly under the runner's OIDC auth context (`npm view` was returning 404 when the published version actually existed).
+
+### Hardened
+
+- Default branch now protected by a Repository Ruleset: required status checks (Lint, Node 20/22/24), no force pushes, no deletion, required linear history, required review-thread resolution, automatic Copilot code review.
+- Default workflow permissions reduced from `write` to `read`; jobs that need write declare it explicitly.
+- `.npmrc` added to `.gitignore` so a manual local publish workflow can never accidentally commit a token.
+
 ## [0.1.1] - 2026-05-02
 
 ### Fixed
