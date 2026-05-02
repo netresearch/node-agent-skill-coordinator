@@ -7,7 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-05-02
+
+### Fixed
+
+- `bin` path no longer carries a `./` prefix; npm 11 silently strips entries with that prefix from the published manifest, breaking `npx agent-skills`.
+
+### Changed
+
+- Release workflow uses npm OIDC Trusted Publishing instead of a long-lived org token.
+
+> Note: v0.1.0 was tagged on GitHub but never reached npm — the publish failed because of the two issues fixed in 0.1.1. 0.1.1 is the first version on the npm registry.
+
 ## [0.1.0] - 2026-05-02
+
+> Tagged on GitHub but never published to npm. See 0.1.1 for the first npm release.
 
 ### Added
 
