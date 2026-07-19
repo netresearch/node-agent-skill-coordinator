@@ -10,5 +10,5 @@ coverage/
 .vscode/
 .idea/
 
-# package-lock.json is intentionally NOT ignored — committed for reproducible CI
+# bun.lock is intentionally NOT ignored — committed for reproducible CI
 # but skills themselves are libraries; consumers don't see this lockfile.
