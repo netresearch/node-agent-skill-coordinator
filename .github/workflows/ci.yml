@@ -4,61 +4,30 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
-  workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  tests:
-    name: Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node: ['20', '22', '24']
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-      - name: Setup Node.js ${{ matrix.node }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-
-      - name: Install dev dependencies
-        # --ignore-scripts: don't run our own postinstall (it would scan the
-        # repo's empty node_modules and is not what CI is testing). Also blocks
-        # postinstall on incoming dev deps, which we have no reason to trust.
-        run: bun install --frozen-lockfile --ignore-scripts
-
-      - name: Run tests
-        run: bun run test
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: '24'
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-
-      - name: Install dev dependencies
-        run: bun install --frozen-lockfile --ignore-scripts
-
-      - name: Run ESLint
-        run: bun run lint
+  # CI via the org node gold-standard reusable. Plain-ESM package: no
+  # type-check/build layer, no GITLEAKS_LICENSE, so those are opted out.
+  # Adoption adds CodeQL + node-audit + dependency-review the repo lacked.
+  ci:
+    uses: netresearch/.github/.github/workflows/node-ci.yml@main
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      pull-requests: write
+    with:
+      package-manager: bun
+      test-matrix: '["20", "22", "24"]'
+      install-cmd: "bun install --frozen-lockfile --ignore-scripts"
+      test-cmd: "bun run test"
+      enable-type-check: false
+      enable-build: false
+      enable-format-check: false
+      enable-gitleaks: false
