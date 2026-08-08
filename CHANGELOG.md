@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-08
+
+### Changed
+- Migrate the package manager from npm to bun.
+- Adopt the shared node-ci and node-release reusable workflows.
+
+### Security
+- Override `brace-expansion` to >=5.0.9 (GHSA-3jxr-9vmj-r5cp, GHSA-mh99-v99m-4gvg, GHSA-rgw5-rvv9-x895).
+
 ## [0.1.3] - 2026-06-09
 
 ### Fixed
