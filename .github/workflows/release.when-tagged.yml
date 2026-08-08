@@ -44,6 +44,10 @@ jobs:
     with:
       package-manager: bun
       install-cmd: bun install --frozen-lockfile --ignore-scripts
+      # This package ships its sources (main: ./src/index.js, files: src/ + bin/)
+      # and has no build script. Without this the reusable runs its default
+      # `bun run build` and the release dies on `Script not found "build"`.
+      build-cmd: ""
       version-source: manifest-verified
       publish-npm: true
       npm-access: public
